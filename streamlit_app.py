@@ -411,6 +411,7 @@ def main():
                                 tmp_file_path = tmp_file.name
                             
                             # Parse the state file
+                            app._ensure_initialized()
                             if app.parser:
                                 parsed_data = app.parser.parse_state_file(tmp_file_path)
                                 st.session_state.parsed_data = {
@@ -428,6 +429,7 @@ def main():
                                 st.success("✅ Analysis complete! Check the other tabs for results.")
                             else:
                                 # Fallback: create a simple parser from the state data directly
+                                st.error("❌ Visualizer not available. Please check module imports.")
                                 st.warning("⚠️ Using fallback parser...")
                                 
                                 # Extract resources directly from state data
@@ -610,6 +612,7 @@ def main():
                     if st.button("🎨 Generate Diagram", type="primary", use_container_width=True):
                         try:
                             with st.spinner("Generating architecture diagram..."):
+                                app._ensure_initialized()
                                 if app.visualizer:
                                     # Generate diagram
                                     diagram_path = app.visualizer.generate_diagram(tmp_file_path)
